@@ -11,6 +11,26 @@ export interface QuizQuestions {
   _id: string;
   _createdDate?: Date;
   _updatedDate?: Date;
+  /** @wixFieldType number */
+  option1Value?: number;
+  /** @wixFieldType number */
+  option5Value?: number;
+  /** @wixFieldType text */
+  option5Text?: string;
+  /** @wixFieldType number */
+  option4Value?: number;
+  /** @wixFieldType text */
+  option4Text?: string;
+  /** @wixFieldType number */
+  option3Value?: number;
+  /** @wixFieldType text */
+  option3Text?: string;
+  /** @wixFieldType number */
+  option2Value?: number;
+  /** @wixFieldType text */
+  option2Text?: string;
+  /** @wixFieldType text */
+  option1Text?: string;
   /** @wixFieldType text */
   questionText?: string;
   /** @wixFieldType text */
