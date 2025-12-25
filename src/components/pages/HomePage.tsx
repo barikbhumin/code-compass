@@ -96,9 +96,9 @@ const CustomStyles = () => (
 export default function HomePage() {
   // Canonical Data Sources (Preserved from original)
   const heroData = {
-    title: "STOP WASTING TIME",
-    subtitle: "Most people aren't ready to learn coding. Not because they lack intelligence, but because they haven't confronted the reality of what it actually requires.",
-    statTitle: "3 MINUTES",
+    title: "ARE YOU READY TO LEARN CODING — RIGHT NOW?",
+    subtitle: "Answer honestly. This is about fit, not ego.",
+    statTitle: "5 QUESTIONS",
     statDesc: "That's all it takes to find out if you're approaching this the right way—or setting yourself up for frustration."
   };
 

@@ -23,6 +23,26 @@ export interface QuizQuestions {
   isMindsetQuestion?: boolean;
   /** @wixFieldType text */
   shortIdentifier?: string;
+  /** @wixFieldType text */
+  option1Text?: string;
+  /** @wixFieldType number */
+  option1Value?: number;
+  /** @wixFieldType text */
+  option2Text?: string;
+  /** @wixFieldType number */
+  option2Value?: number;
+  /** @wixFieldType text */
+  option3Text?: string;
+  /** @wixFieldType number */
+  option3Value?: number;
+  /** @wixFieldType text */
+  option4Text?: string;
+  /** @wixFieldType number */
+  option4Value?: number;
+  /** @wixFieldType text */
+  option5Text?: string;
+  /** @wixFieldType number */
+  option5Value?: number;
 }
 
 
