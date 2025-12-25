@@ -9,7 +9,7 @@ import { ArrowRight, RotateCcw } from 'lucide-react';
 
 export default function ResultsPage() {
   const location = useLocation();
-  const { category, averageScore } = location.state || {};
+  const { category, mindsetScore } = location.state || {};
   const [result, setResult] = useState<QuizResults | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -30,12 +30,6 @@ export default function ResultsPage() {
       console.error('Error loading results:', error);
       setIsLoading(false);
     }
-  };
-
-  const getResultEmoji = (category: string) => {
-    if (category === 'Start Coding Now') return '🟢';
-    if (category === 'Learn Tech Thinking First') return '🟡';
-    return '🔴';
   };
 
   if (!category) {
@@ -72,6 +66,14 @@ export default function ResultsPage() {
     );
   }
 
+  const getMindsetLevel = (score: number) => {
+    if (score >= 4) return 'Strong';
+    if (score >= 3) return 'Developing';
+    return 'Needs Work';
+  };
+
+  const mindsetLevel = getMindsetLevel(mindsetScore || 0);
+
   return (
     <div className="min-h-screen flex flex-col bg-background">
       <Header />
@@ -84,15 +86,33 @@ export default function ResultsPage() {
               <p className="font-paragraph text-sm text-primary-foreground/80 mb-4 uppercase tracking-wider">
                 Your Assessment Results
               </p>
-              <div className="flex items-start gap-4 mb-8">
-                <span className="text-5xl">{getResultEmoji(category)}</span>
-                <h1 className="font-heading text-5xl lg:text-6xl text-primary-foreground leading-tight">
-                  {result?.resultTitle || category}
-                </h1>
-              </div>
+              <h1 className="font-heading text-5xl lg:text-7xl text-primary-foreground mb-8 leading-tight">
+                {result?.resultTitle || 'Results Ready'}
+              </h1>
               <p className="font-paragraph text-xl text-primary-foreground leading-relaxed">
                 {result?.shortDescription || 'Your assessment has been completed.'}
               </p>
+            </div>
+          </div>
+        </section>
+        
+        {/* Mindset Score */}
+        <section className="w-full bg-secondary">
+          <div className="max-w-[100rem] mx-auto px-8 py-16">
+            <div className="max-w-4xl">
+              <h2 className="font-heading text-2xl text-foreground mb-6">MINDSET EVALUATION</h2>
+              <div className="bg-background p-8 rounded-lg border border-neutralborder">
+                <div className="flex items-center justify-between mb-4">
+                  <p className="font-paragraph text-lg text-foreground">Current Level:</p>
+                  <p className="font-heading text-3xl text-primary">{mindsetLevel}</p>
+                </div>
+                <div className="w-full bg-neutralborder h-3 rounded-full overflow-hidden">
+                  <div 
+                    className="bg-primary h-full transition-all duration-500"
+                    style={{ width: `${((mindsetScore || 0) / 5) * 100}%` }}
+                  />
+                </div>
+              </div>
             </div>
           </div>
         </section>
@@ -105,35 +125,37 @@ export default function ResultsPage() {
                 WHAT THIS MEANS
               </h2>
               
-              <div className="bg-secondary p-10 rounded-lg mb-12">
-                <p className="font-paragraph text-xl text-foreground leading-relaxed whitespace-pre-line">
-                  {result?.guidanceText || 'Based on your responses, we have identified your current readiness level.'}
-                </p>
-              </div>
-              
-              {result?.recommendationTitle && (
-                <div className="border-l-4 border-primary pl-8 py-6">
-                  <h3 className="font-heading text-2xl text-foreground mb-4">
-                    RECOMMENDED PATH
-                  </h3>
-                  <p className="font-paragraph text-lg text-foreground mb-6 leading-relaxed">
-                    {result.recommendationTitle}
+              <div className="prose prose-lg max-w-none">
+                <div className="bg-secondary p-10 rounded-lg mb-12">
+                  <p className="font-paragraph text-xl text-foreground leading-relaxed whitespace-pre-line">
+                    {result?.guidanceText || 'Based on your responses, we have identified your current readiness level.'}
                   </p>
-                  {result.recommendationUrl && (
-                    <a 
-                      href={result.recommendationUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-block"
-                    >
-                      <Button className="bg-primary text-primary-foreground hover:bg-primary/90 font-paragraph px-6 py-3 h-auto rounded-md">
-                        Explore This Path
-                        <ArrowRight className="ml-2 h-4 w-4" />
-                      </Button>
-                    </a>
-                  )}
                 </div>
-              )}
+                
+                {result?.recommendationTitle && (
+                  <div className="border-l-4 border-primary pl-8 py-6">
+                    <h3 className="font-heading text-2xl text-foreground mb-4">
+                      RECOMMENDED PATH
+                    </h3>
+                    <p className="font-paragraph text-lg text-foreground mb-6 leading-relaxed">
+                      {result.recommendationTitle}
+                    </p>
+                    {result.recommendationUrl && (
+                      <a 
+                        href={result.recommendationUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-block"
+                      >
+                        <Button className="bg-primary text-primary-foreground hover:bg-primary/90 font-paragraph px-6 py-3 h-auto rounded-md">
+                          Explore This Path
+                          <ArrowRight className="ml-2 h-4 w-4" />
+                        </Button>
+                      </a>
+                    )}
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         </section>

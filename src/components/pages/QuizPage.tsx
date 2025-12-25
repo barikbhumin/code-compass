@@ -65,26 +65,35 @@ export default function QuizPage() {
   };
 
   const calculateAndNavigateToResults = async () => {
-    // Calculate average score across all answers
-    const allAnswers = Object.values(answers);
-    const averageScore = allAnswers.length > 0 
-      ? allAnswers.reduce((a, b) => a + b, 0) / allAnswers.length 
-      : 0;
+    const categoryScores: Record<string, number> = {};
+    const mindsetScore = { total: 0, count: 0 };
 
-    // Determine result category based on average score
-    let resultCategory = 'Start Coding Now';
-    if (averageScore >= 1 && averageScore < 2.5) {
-      resultCategory = 'Start Coding Now';
-    } else if (averageScore >= 2.5 && averageScore < 4) {
-      resultCategory = 'Learn Tech Thinking First';
-    } else {
-      resultCategory = 'Coding Isn\'t the Right Starting Point';
-    }
+    questions.forEach((question) => {
+      const answer = answers[question._id] || 0;
+      const weight = question.questionWeight || 1;
+      const category = question.questionCategory || 'general';
+
+      if (question.isMindsetQuestion) {
+        mindsetScore.total += answer * weight;
+        mindsetScore.count += 1;
+      }
+
+      if (!categoryScores[category]) {
+        categoryScores[category] = 0;
+      }
+      categoryScores[category] += answer * weight;
+    });
+
+    const dominantCategory = Object.entries(categoryScores).reduce((a, b) => 
+      a[1] > b[1] ? a : b
+    )[0];
+
+    const avgMindsetScore = mindsetScore.count > 0 ? mindsetScore.total / mindsetScore.count : 0;
 
     navigate('/results', { 
       state: { 
-        category: resultCategory,
-        averageScore: averageScore,
+        category: dominantCategory,
+        mindsetScore: avgMindsetScore,
         answers 
       } 
     });
@@ -114,16 +123,29 @@ export default function QuizPage() {
     );
   }
 
+  const progress = ((currentQuestionIndex + 1) / questions.length) * 100;
+
   return (
     <div className="min-h-screen flex flex-col bg-background">
       <Header />
       
       <main className="flex-1 w-full">
+        {/* Progress Bar */}
+        <div className="w-full bg-secondary h-2">
+          <div 
+            className="bg-primary h-full transition-all duration-300"
+            style={{ width: `${progress}%` }}
+          />
+        </div>
+        
         <div className="max-w-[100rem] mx-auto px-8 py-16 lg:py-24">
           {/* Question Counter */}
           <div className="mb-12">
             <p className="font-paragraph text-sm text-secondary-foreground mb-2">
               Question {currentQuestionIndex + 1} of {questions.length}
+            </p>
+            <p className="font-paragraph text-xs text-secondary-foreground uppercase tracking-wider">
+              {currentQuestion?.questionCategory || 'Assessment'}
             </p>
           </div>
           
@@ -136,20 +158,40 @@ export default function QuizPage() {
             {/* Answer Options */}
             <RadioGroup value={selectedAnswer} onValueChange={handleAnswerSelect}>
               <div className="space-y-6">
-                {[
-                  { value: '1', text: currentQuestion?.option1Text || 'Option 1' },
-                  { value: '2', text: currentQuestion?.option2Text || 'Option 2' },
-                  { value: '3', text: currentQuestion?.option3Text || 'Option 3' },
-                  { value: '4', text: currentQuestion?.option4Text || 'Option 4' },
-                  { value: '5', text: currentQuestion?.option5Text || 'Option 5' }
-                ].map((option) => (
-                  <div key={option.value} className="flex items-start space-x-4 p-6 border-2 border-neutralborder hover:border-primary transition-colors rounded-md cursor-pointer">
-                    <RadioGroupItem value={option.value} id={`option-${option.value}`} className="mt-1" />
-                    <Label htmlFor={`option-${option.value}`} className="font-paragraph text-lg text-foreground leading-relaxed cursor-pointer flex-1">
-                      {option.text}
-                    </Label>
-                  </div>
-                ))}
+                <div className="flex items-start space-x-4 p-6 border-2 border-neutralborder hover:border-primary transition-colors rounded-md cursor-pointer">
+                  <RadioGroupItem value="5" id="option-5" className="mt-1" />
+                  <Label htmlFor="option-5" className="font-paragraph text-lg text-foreground leading-relaxed cursor-pointer flex-1">
+                    Strongly Agree
+                  </Label>
+                </div>
+                
+                <div className="flex items-start space-x-4 p-6 border-2 border-neutralborder hover:border-primary transition-colors rounded-md cursor-pointer">
+                  <RadioGroupItem value="4" id="option-4" className="mt-1" />
+                  <Label htmlFor="option-4" className="font-paragraph text-lg text-foreground leading-relaxed cursor-pointer flex-1">
+                    Agree
+                  </Label>
+                </div>
+                
+                <div className="flex items-start space-x-4 p-6 border-2 border-neutralborder hover:border-primary transition-colors rounded-md cursor-pointer">
+                  <RadioGroupItem value="3" id="option-3" className="mt-1" />
+                  <Label htmlFor="option-3" className="font-paragraph text-lg text-foreground leading-relaxed cursor-pointer flex-1">
+                    Neutral
+                  </Label>
+                </div>
+                
+                <div className="flex items-start space-x-4 p-6 border-2 border-neutralborder hover:border-primary transition-colors rounded-md cursor-pointer">
+                  <RadioGroupItem value="2" id="option-2" className="mt-1" />
+                  <Label htmlFor="option-2" className="font-paragraph text-lg text-foreground leading-relaxed cursor-pointer flex-1">
+                    Disagree
+                  </Label>
+                </div>
+                
+                <div className="flex items-start space-x-4 p-6 border-2 border-neutralborder hover:border-primary transition-colors rounded-md cursor-pointer">
+                  <RadioGroupItem value="1" id="option-1" className="mt-1" />
+                  <Label htmlFor="option-1" className="font-paragraph text-lg text-foreground leading-relaxed cursor-pointer flex-1">
+                    Strongly Disagree
+                  </Label>
+                </div>
               </div>
             </RadioGroup>
             
