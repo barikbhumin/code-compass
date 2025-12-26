@@ -137,7 +137,6 @@ export default function HomePage() {
     <div className="min-h-screen flex flex-col bg-background overflow-x-hidden font-sans selection:bg-primary selection:text-white">
       <CustomStyles />
       <Header />
-
       {/* --- HERO SECTION --- */}
       {/* Layout inspired by "The Angelo": Split screen, left text/wireframe, right rounded image */}
       <section className="relative w-full min-h-[95vh] flex flex-col lg:flex-row items-center overflow-hidden pt-20 lg:pt-0">
@@ -182,15 +181,8 @@ export default function HomePage() {
 
           {/* Abstract Wireframe Visual (Replacing the building wireframe from inspiration) */}
           <div className="mt-16 lg:mt-24 relative w-64 h-64 hidden lg:block opacity-60">
-             {/* CSS-only Schematic Representation */}
-             <div className="absolute inset-0 border border-wireframestroke/30 transform translate-x-4 translate-y-4" />
-             <div className="absolute inset-0 border border-wireframestroke/50 transform translate-x-2 translate-y-2" />
-             <div className="absolute inset-0 border border-wireframestroke bg-white/50 backdrop-blur-sm flex flex-col justify-between p-4">
-                <div className="w-full h-px bg-wireframestroke/50" />
-                <div className="w-full h-px bg-wireframestroke/50" />
-                <div className="w-full h-px bg-wireframestroke/50" />
-                <div className="absolute bottom-4 right-4 font-mono text-xs text-wireframestroke">FIG. 1.0 // LOGIC</div>
-             </div>
+            {/* CSS-only Schematic Representation */}
+
           </div>
         </div>
 
@@ -217,7 +209,6 @@ export default function HomePage() {
           </div>
         </div>
       </section>
-
       {/* --- MARQUEE DIVIDER --- */}
       <div className="w-full bg-foreground text-background py-4 overflow-hidden border-y border-neutral-800">
         <div className="marquee-container">
@@ -226,7 +217,6 @@ export default function HomePage() {
           </div>
         </div>
       </div>
-
       {/* --- THE UNCOMFORTABLE TRUTH (Sticky Scroll) --- */}
       <section className="w-full bg-secondary py-24 lg:py-32 relative">
         <div className="max-w-[100rem] mx-auto px-6 lg:px-12">
@@ -236,7 +226,7 @@ export default function HomePage() {
             <div className="lg:w-1/3">
               <div className="sticky top-32">
                 <AnimatedElement>
-                  <h2 className="font-heading text-5xl lg:text-7xl text-foreground mb-8 leading-none">
+                  <h2 className="font-heading text-foreground mb-8 text-4xl lg:text-4xl">
                     THE<br/>UNCOMFORTABLE<br/><span className="text-primary">TRUTH</span>
                   </h2>
                 </AnimatedElement>
@@ -270,7 +260,6 @@ export default function HomePage() {
           </div>
         </div>
       </section>
-
       {/* --- WHAT THIS IS / ISN'T (Magazine Layout) --- */}
       <section className="w-full bg-background py-24 lg:py-32 overflow-hidden">
         <div className="max-w-[100rem] mx-auto px-6 lg:px-12">
@@ -337,7 +326,6 @@ export default function HomePage() {
           </div>
         </div>
       </section>
-
       {/* --- VISUAL BREATHER / PARALLAX --- */}
       <section className="w-full h-[60vh] relative overflow-hidden flex items-center justify-center">
         <div className="absolute inset-0 bg-black z-0">
@@ -356,7 +344,6 @@ export default function HomePage() {
           </AnimatedElement>
         </div>
       </section>
-
       {/* --- CTA SECTION --- */}
       <section className="w-full bg-foreground text-background py-32 lg:py-48 relative overflow-hidden">
         {/* Decorative background elements */}
@@ -388,7 +375,6 @@ export default function HomePage() {
           </AnimatedElement>
         </div>
       </section>
-
       <Footer />
     </div>
   );
