@@ -41,17 +41,19 @@ export default function QuizPage() {
 
   const handleNext = () => {
     if (selectedAnswer && currentQuestion) {
-      setAnswers({
+      const updatedAnswers = {
         ...answers,
         [currentQuestion._id]: parseInt(selectedAnswer)
-      });
+      };
+      setAnswers(updatedAnswers);
       
       if (currentQuestionIndex < questions.length - 1) {
         setCurrentQuestionIndex(currentQuestionIndex + 1);
         const nextQuestion = questions[currentQuestionIndex + 1];
-        setSelectedAnswer(answers[nextQuestion._id]?.toString() || '');
+        setSelectedAnswer(updatedAnswers[nextQuestion._id]?.toString() || '');
       } else {
-        calculateAndNavigateToResults();
+        // Use updatedAnswers for final calculation
+        calculateAndNavigateToResults(updatedAnswers);
       }
     }
   };
@@ -64,9 +66,9 @@ export default function QuizPage() {
     }
   };
 
-  const calculateAndNavigateToResults = async () => {
+  const calculateAndNavigateToResults = async (finalAnswers: Record<string, number>) => {
     // Calculate average score across all answers
-    const allAnswers = Object.values(answers);
+    const allAnswers = Object.values(finalAnswers);
     const averageScore = allAnswers.length > 0 
       ? allAnswers.reduce((a, b) => a + b, 0) / allAnswers.length 
       : 0;
@@ -85,7 +87,7 @@ export default function QuizPage() {
       state: { 
         category: resultCategory,
         averageScore: averageScore,
-        answers 
+        answers: finalAnswers
       } 
     });
   };
